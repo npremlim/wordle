@@ -61,17 +61,30 @@ document.addEventListener("DOMContentLoaded",()=>{
     function getTileColor(letter,index){
         const isCorrectLetter= word.includes(letter);
         if(!isCorrectLetter){
-            return "rgb(58,58,60)";
+            const letterkey = "k"+letter;
+            const keyboardletter =document.getElementById(letterkey);
+            keyboardletter.style= `background-color:rgb(219, 220, 218)`;
+           
+            return "rgb(219, 220, 218)";
         }
 
         const letterInThatPosition = word.charAt(index);
         const isCorrectPosition = letter === letterInThatPosition
 
         if(isCorrectPosition){
-            return "rgb(83,141,78)";
+            const letterkey = "k"+letter;
+            const keyboardletter =document.getElementById(letterkey);
+            keyboardletter.style= `background-color:rgb(195, 222, 182)`;
+           
+            return "rgb(195, 222, 182)";
+            
         }
 
-        return "rgb(181,159,59)";
+        const letterkey = "k"+letter;
+        const keyboardletter =document.getElementById(letterkey);
+        keyboardletter.style= `background-color:rgb(251, 238, 149)`;
+
+        return "rgb(251, 238, 149)";
 
     }
 
@@ -115,10 +128,12 @@ document.addEventListener("DOMContentLoaded",()=>{
         guessedWordCount+=1;
         if(currentWord === word){
             window.alert("Congratulations!");
+            return;
         }
 
         if(guessedWords.length== 6){
-            window.alert(`You have run out of tries.The correct word is ${word}.`)
+            window.alert(`You have run out of tries.The correct word is ${word}.`);
+            return;
         }
 
         guessedWords.push([]);
@@ -126,6 +141,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     })
     .catch(()=>{
         window.alert("Word does not exist");
+        return;
     });
 
 
@@ -138,10 +154,12 @@ document.addEventListener("DOMContentLoaded",()=>{
             currentWordArr.push(letter);
 
             const availableSpaceEl = document.getElementById(String(availableSpace));
+            availableSpaceEl.classList.add("animate__pulse");
             availableSpace=availableSpace+1;
             availableSpaceEl.textContent= letter;
 
         }
+        return;
 
 
     }
@@ -162,6 +180,11 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
 
     function deleteLetter(){
+        if((availableSpace-1)<=guessedWordCount*5){
+            
+            return;
+        }
+
         const currentWordArr=getCurrentWordArr();
         const removedLetter = currentWordArr.pop();
 
@@ -170,11 +193,30 @@ document.addEventListener("DOMContentLoaded",()=>{
 
         lastLetterEl.textContent="";
         availableSpace= availableSpace-1;
+        
     }
+    document.addEventListener('keypress', function(event) {
+
+         if(event.key=="Enter"){
+                handleSubmitWord();
+                return;
+
+
+            }
+            if(event.key=="Backspace"){
+                deleteLetter();
+                return;
+
+
+            }else{
+                updateGuessedWords(event.key);
+
+            }
+    });
 
     for(let i=0;i<keys.length;i++){
         keys[i].onclick = ({target}) => {
-            const letter = target.getAttribute("data-key");
+            const letter = target.getAttribute("data-key")
             if(letter=="enter"){
                 handleSubmitWord();
                 return;
