@@ -127,6 +127,8 @@ document.addEventListener("DOMContentLoaded",()=>{
         });
         guessedWordCount+=1;
         if(currentWord === word){
+            var mySound = new Audio("thats-hot.mp3");
+                mySound.play();
             window.alert("Congratulations!");
             return;
         }
@@ -198,7 +200,9 @@ document.addEventListener("DOMContentLoaded",()=>{
     document.addEventListener('keypress', function(event) {
 
          if(event.key=="Enter"){
+
                 handleSubmitWord();
+                
                 return;
 
 
@@ -219,6 +223,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             const letter = target.getAttribute("data-key")
             if(letter=="enter"){
                 handleSubmitWord();
+               
                 return;
 
 
